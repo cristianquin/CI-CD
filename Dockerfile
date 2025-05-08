@@ -8,6 +8,7 @@ WORKDIR /app
 COPY app/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copia el código fuente restante
 COPY app .
 
 # Exponer puerto
