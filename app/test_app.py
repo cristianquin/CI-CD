@@ -1,7 +1,8 @@
 from appflsk import app
 
+
 def test_index():
-    client = app.test_client()
-    response = client.get('/')
+    tester = app.test_client()
+    response = tester.get('/')
     assert response.status_code == 200
-    assert b'Funciono la conexión' in response.data
+    assert 'Funcionó' in response.get_data(as_text=True)

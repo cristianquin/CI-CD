@@ -4,6 +4,7 @@ import os
 
 app = Flask(__name__)
 
+
 def get_db_connection():
     conn = psycopg2.connect(
         host=os.getenv("DB_HOST", "localhost"),
@@ -13,6 +14,7 @@ def get_db_connection():
     )
     return conn
 
+
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -21,7 +23,11 @@ def index():
     db_version = cur.fetchone()
     cur.close()
     conn.close()
-    return f'Funciono la conexión con Postgres<br>La version de la imagen de Postgres es: {db_version[0]}<br>'
+    return (
+        f'Funcionó la conexión con Postgres<br>'
+        f'La versión de la imagen de Postgres es: {db_version[0]}<br>'
+    )
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
