@@ -76,9 +76,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            if [ ! -d "flask-app" ]; then
+              git clone https://github.com/cristianquin/CI-CD.git flask-app
+            fi
             cd flask-app
-            pwd
-            ls -la
+            git pull origin development
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/flask-app:latest
             docker-compose down
