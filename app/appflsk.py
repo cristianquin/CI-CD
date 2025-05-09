@@ -1,24 +1,25 @@
-import os
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, jsonify
+import psycopg2
 
 app = Flask(__name__)
 
-# Variables desde entorno
-DB_HOST = os.environ.get('DB_HOST', 'localhost')
-DB_NAME = os.environ.get('POSTGRES_DB', 'mydb')
-DB_USER = os.environ.get('POSTGRES_USER', 'user')
-DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'password')
 
-# Cadena de conexión
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+def get_db_connection():
+    conn = psycopg2.connect(
+        host='db',
+        database='mydb',
+        user='user',
+        password='password'
+    )
+    return conn
 
-db = SQLAlchemy(app)
 
-@app.route('/')
-def home():
-    return "¡Flask corriendo correctamente en Docker con PostgreSQL!"
+def index():
+    conn = get_db_connection()
+    conn.close()
+    message = 'Hello, World! La conexión a la base de datos fue exitosa'
+    return jsonify({'message': message})
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
