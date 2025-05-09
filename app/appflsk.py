@@ -1,33 +1,24 @@
-from flask import Flask
-import psycopg2
 import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+# Variables desde entorno
+DB_HOST = os.environ.get('DB_HOST', 'localhost')
+DB_NAME = os.environ.get('POSTGRES_DB', 'mydb')
+DB_USER = os.environ.get('POSTGRES_USER', 'user')
+DB_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'password')
 
-def get_db_connection():
-    conn = psycopg2.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        database=os.getenv("POSTGRES_DB", "mydb"),
-        user=os.getenv("POSTGRES_USER", "user"),
-        password=os.getenv("POSTGRES_PASSWORD", "password")
-    )
-    return conn
+# Cadena de conexión
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 
 @app.route('/')
-def index():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('SELECT version();')
-    db_version = cur.fetchone()
-    cur.close()
-    conn.close()
-    return (
-        f'Funcionó la conexión con Postgres<br>'
-        f'La versión de la imagen de Postgres es: {db_version[0]}<br>'
-    )
-
+def home():
+    return "¡Flask corriendo correctamente en Docker con PostgreSQL!"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0')
