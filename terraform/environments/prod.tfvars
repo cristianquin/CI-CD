@@ -1,7 +1,8 @@
-
 env_name       = "prod"
 instance_type  = "t3.medium"
 db_name        = "proddb"
 db_username    = "postgres"
 db_password    = "prodpass123"
+db_identifier  = "prod-db"
 bucket_name    = "my-bucket-prod"
+aws_region     = "us-east-1"

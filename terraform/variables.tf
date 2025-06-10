@@ -24,7 +24,17 @@ variable "db_password" {
   sensitive   = true
 }
 
+variable "db_identifier" {
+  description = "Identificador único para la base de datos RDS"
+  type        = string
+}
+
 variable "bucket_name" {
   description = "Nombre del bucket S3"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "Región de AWS"
   type        = string
 }

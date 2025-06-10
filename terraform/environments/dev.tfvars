@@ -1,7 +1,8 @@
-
 env_name       = "dev"
 instance_type  = "t3.micro"
 db_name        = "devdb"
 db_username    = "postgres"
 db_password    = "devpass123"
+db_identifier  = "dev-db"
 bucket_name    = "my-bucket-dev"
+aws_region     = "us-east-1"

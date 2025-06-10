@@ -5,11 +5,12 @@ module "ec2" {
 }
 
 module "rds" {
-  source        = "./modules/rds"
-  env_name      = var.env_name
-  db_name       = var.db_name
-  db_username   = var.db_username
-  db_password   = var.db_password
+  source         = "./modules/rds"
+  env_name       = var.env_name
+  db_name        = var.db_name
+  db_username    = var.db_username
+  db_password    = var.db_password
+  db_identifier  = var.db_identifier
 }
 
 module "s3" {

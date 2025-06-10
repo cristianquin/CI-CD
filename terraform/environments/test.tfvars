@@ -1,7 +1,8 @@
-
 env_name       = "test"
 instance_type  = "t3.micro"
 db_name        = "testdb"
 db_username    = "postgres"
 db_password    = "testpass123"
+db_identifier  = "test-db"
 bucket_name    = "my-bucket-test"
+aws_region     = "us-east-1"

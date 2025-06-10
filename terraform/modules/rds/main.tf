@@ -2,13 +2,15 @@ variable "env_name" {}
 variable "db_name" {}
 variable "db_username" {}
 variable "db_password" {}
+variable "db_identifier" {}
 
 resource "aws_db_instance" "postgres" {
   allocated_storage    = 20
   engine               = "postgres"
   engine_version       = "14"
   instance_class       = "db.t3.micro"
-  name                 = var.db_name
+  identifier           = var.db_identifier
+  db_name              = var.db_name
   username             = var.db_username
   password             = var.db_password
   skip_final_snapshot  = true
