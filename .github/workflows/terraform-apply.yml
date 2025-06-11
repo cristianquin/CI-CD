@@ -34,4 +34,17 @@ jobs:
       run: terraform init
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve -var-file="environments/${{ github.event.inputs.environment }}.tfvars"
+      run: |
+        ENVIRONMENT="${{ github.event.inputs.environment }}"
+        if [ -z "$ENVIRONMENT" ]; then
+          ENVIRONMENT="dev"
+        fi
+
+        echo "Usando ambiente: $ENVIRONMENT"
+        
+        if [ ! -f "environments/${ENVIRONMENT}.tfvars" ]; then
+          echo "Error: El archivo environments/${ENVIRONMENT}.tfvars no existe"
+          exit 1
+        fi
+
+        terraform apply -auto-approve -var-file="environments/${ENVIRONMENT}.tfvars"
