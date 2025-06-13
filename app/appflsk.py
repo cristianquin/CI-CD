@@ -7,10 +7,10 @@ app = Flask(__name__)
 
 def get_db_connection():
     conn = psycopg2.connect(
-        host=os.environ.get('DB_HOST', 'localhost'),
-        database='mydb',
-        user='user',
-        password='password'
+        dbname=os.environ.get("POSTGRES_DB", "mydb"),
+        user=os.environ.get("POSTGRES_USER", "user"),
+        password=os.environ.get("POSTGRES_PASSWORD", "password"),
+        host=os.environ.get("DB_HOST", "localhost")
     )
     return conn
 
