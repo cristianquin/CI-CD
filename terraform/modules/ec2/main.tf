@@ -11,6 +11,10 @@ variable "security_group_id" {}
 resource "aws_key_pair" "deployer" {
   key_name   = var.ssh_key_name
   public_key = file(var.public_key_path)
+
+  lifecycle {
+    ignore_changes = [public_key]
+  }
 }
 
 resource "aws_instance" "app_server" {

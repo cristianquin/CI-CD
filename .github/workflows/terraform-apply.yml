@@ -52,7 +52,25 @@ jobs:
     - name: Obtener IP pública
       id: get-ip
       run: |
-        terraform output -raw ec2_public_ip || echo "No se pudo obtener la IP"
-        IP=$(terraform output -raw ec2_public_ip || echo "0.0.0.0")
+        echo "Obteniendo la IP pública de la instancia EC2..."
+        IP=$(terraform output -raw ec2_public_ip 2>/dev/null || echo "")
+        
+        if [ -z "$IP" ]; then
+          echo "❌ ERROR: No se pudo obtener la IP pública de la EC2"
+          exit 1
+        fi
+
+        echo "✅ IP pública obtenida: $IP"
         echo "EC2_HOST=$IP" >> $GITHUB_ENV
+
+    - name: Deploy vía SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ env.EC2_HOST }}
+        username: ubuntu 
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/ubuntu/app
+          git pull origin main
+          docker-compose up -d --build
 
