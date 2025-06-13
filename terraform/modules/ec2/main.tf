@@ -25,3 +25,12 @@ output "instance_id" {
 output "public_ip" {
   value = aws_instance.app_server.public_ip
 }
+
+resource "aws_eip" "app_eip" {
+  instance = aws_instance.app_server.id
+  vpc      = true
+}
+
+output "ec2_public_ip" {
+  value = aws_eip.app_eip.public_ip
+}
