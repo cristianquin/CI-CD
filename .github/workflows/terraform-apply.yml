@@ -52,6 +52,7 @@ jobs:
     - name: Obtener IP pública
       id: get-ip
       run: |
-        IP=$(terraform output -raw ec2_public_ip)
+        terraform output -raw ec2_public_ip || echo "No se pudo obtener la IP"
+        IP=$(terraform output -raw ec2_public_ip || echo "0.0.0.0")
         echo "EC2_HOST=$IP" >> $GITHUB_ENV
 

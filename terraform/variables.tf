@@ -48,3 +48,8 @@ variable "public_key_path" {
   description = "Ruta local del archivo de clave pública SSH (.pub)"
   type        = string
 }
+
+variable "ami_id" {
+  description = "ID de la AMI para la instancia EC2"
+  type        = string
+}
