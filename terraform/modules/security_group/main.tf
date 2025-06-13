@@ -33,11 +33,13 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-resource "aws_security_group" "rds_sg" {
-  name        = "${var.env_name}-rds-sg"
-  description = "Permitir PostgreSQL desde EC2"
+resource "aws_security_group" "ec2_sg" {
+  name        = "${var.env_name}-sg"
+  description = "Security group para EC2"
+  vpc_id      = var.vpc_id # Solo si estás usando VPC explícitamente
+
   ingress {
-    description = "SSH"
+    description = "Allow SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -45,7 +47,7 @@ resource "aws_security_group" "rds_sg" {
   }
 
   ingress {
-    description = "HTTP"
+    description = "Allow HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -53,16 +55,15 @@ resource "aws_security_group" "rds_sg" {
   }
 
   egress {
-    description = "Allow all outbound"
+    description = "Allow all outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
   tags = {
-    Name = "${var.env_name}-rds-sg"
+    Name = "${var.env_name}-sg"
   }
 }
 
