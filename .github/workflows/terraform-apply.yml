@@ -53,4 +53,5 @@ jobs:
       id: get-ip
       run: |
         IP=$(terraform output -raw ec2_public_ip)
-        echo "EC2_IP=$IP" >> $GITHUB_ENV
+        echo "EC2_HOST=$IP" >> $GITHUB_ENV
+
