@@ -48,3 +48,9 @@ jobs:
         fi
 
         terraform apply -auto-approve -var-file="environments/${ENVIRONMENT}.tfvars"
+
+    - name: Obtener IP pública
+      id: get-ip
+      run: |
+        IP=$(terraform output -raw ec2_public_ip)
+        echo "EC2_IP=$IP" >> $GITHUB_ENV
