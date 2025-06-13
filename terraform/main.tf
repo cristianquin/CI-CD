@@ -1,8 +1,11 @@
 module "ec2" {
-  source        = "./modules/ec2"
-  env_name      = var.env_name
-  instance_type = var.instance_type
+  source           = "./modules/ec2"
+  env_name         = var.env_name
+  instance_type    = var.instance_type
+  ssh_key_name     = var.ssh_key_name
+  public_key_path  = var.public_key_path
 }
+
 
 module "rds" {
   source         = "./modules/rds"

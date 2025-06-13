@@ -40,11 +40,11 @@ variable "aws_region" {
 }
 
 variable "ssh_key_name" {
-  description = "Nombre del key pair para EC2"
+  description = "Nombre del par de llaves SSH en AWS"
   type        = string
 }
 
 variable "public_key_path" {
-  description = "Ruta al archivo .pub de la clave SSH"
+  description = "Ruta local del archivo de clave pública SSH (.pub)"
   type        = string
 }
