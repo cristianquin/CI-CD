@@ -31,7 +31,7 @@ output "instance_id" {
 
 resource "aws_eip" "app_eip" {
   instance = aws_instance.app_server.id
-  vpc      = true
+  domain   = "vpc"
 }
 
 output "public_ip" {
