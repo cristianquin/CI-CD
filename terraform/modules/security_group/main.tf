@@ -33,7 +33,35 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
+resource "aws_security_group" "rds_sg" {
+  name        = "${var.env_name}-rds-sg"
+  description = "Permitir acceso a RDS desde EC2"
+
+  ingress {
+    description = "PostgreSQL desde EC2"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    # Aquí deberías poner el ID del grupo de seguridad de EC2, si lo tienes
+    security_groups = [aws_security_group.ec2_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.env_name}-rds-sg"
+  }
+}
+
 output "ec2_sg_id" {
   value = aws_security_group.ec2_sg.id
 }
 
+output "rds_sg_id" {
+  value = aws_security_group.rds_sg.id
+}
