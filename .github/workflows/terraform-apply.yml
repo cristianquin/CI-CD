@@ -70,7 +70,28 @@ jobs:
         username: ubuntu 
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/ubuntu/app
-          git pull origin main
-          docker-compose up -d --build
+          mkdir -p /home/ubuntu/app
+
+          # Instalar Git, Docker y Docker Compose si no están
+          if ! command -v git &> /dev/null; then
+            sudo apt update && sudo apt install -y git
+          fi
+
+          if ! command -v docker &> /dev/null; then
+            curl -fsSL https://get.docker.com | sh
+            sudo usermod -aG docker ubuntu
+          fi
+
+          if ! command -v docker-compose &> /dev/null; then
+            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+          fi
+
+          # Clonar el repositorio si no existe
+          if [ ! -d "/home/ubuntu/app/.git" ]; then
+            git clone https://github.com/${{ github.repository }} /home/ubuntu/app
+          fi
+              cd /home/ubuntu/app
+              git pull origin main
+              docker-compose up -d --build
 
