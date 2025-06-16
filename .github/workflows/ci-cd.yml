@@ -1,6 +1,10 @@
 name: CI/CD with Terraform and EC2 Deployment
 
 on:
+  workflow_run:
+    workflows: ["Terraform Apply"]
+    types:
+      - completed
   push:
     branches:
       - development
