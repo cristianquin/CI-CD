@@ -89,9 +89,10 @@ jobs:
               git clone https://github.com/cristianquin/CI-CD.git flask-app
             fi
             cd flask-app
-            git pull origin development
-            docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+            git pull --rebase origin development
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull cristianquin/flask-app:latest
             docker-compose down
+            docker ps -aq | xargs docker stop || true
+            docker ps -aq | xargs docker rm || true
             docker-compose up -d
-
