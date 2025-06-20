@@ -6,6 +6,12 @@ on:
       - development
       - test
       - production
+      
+  pull_request:
+    branches:
+      - development
+      - test
+      - production
   workflow_dispatch:
     inputs:
       environment:
