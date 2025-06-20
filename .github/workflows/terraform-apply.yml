@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - development
+      - test
+      - production
   workflow_dispatch:
     inputs:
       environment:
@@ -37,9 +39,16 @@ jobs:
       run: |
         ENVIRONMENT="${{ github.event.inputs.environment }}"
         if [ -z "$ENVIRONMENT" ]; then
-          ENVIRONMENT="dev"
+          case "${{ github.ref_name }}" in
+            development) ENVIRONMENT="dev" ;;
+            test) ENVIRONMENT="test" ;;
+            main) ENVIRONMENT="prod" ;;
+            *) 
+              echo "Rama desconocida: ${{ github.ref_name }}"
+              exit 1
+              ;;
+          esac
         fi
-
         echo "Usando ambiente: $ENVIRONMENT"
         
         if [ ! -f "environments/${ENVIRONMENT}.tfvars" ]; then
